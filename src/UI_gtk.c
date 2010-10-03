@@ -161,6 +161,7 @@ static void glwidget_realize(GtkWidget *widget, gpointer user_data)
 
 	if (gdk_gl_drawable_gl_begin(gldrawable, glcontext))
 	{
+		glXSwapIntervalEXT(glXGetCurrentDisplay(),glXGetCurrentDrawable(),1);
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(3);
 		glFinish();
@@ -336,10 +337,9 @@ void UI_buildui(IBusHandwriteEngine * engine)
 		engine->lookuppanel = gtk_table_new(2,5,TRUE);
 
 		gtk_box_pack_end(GTK_BOX(vbox),engine->lookuppanel,FALSE,TRUE,FALSE);
-		gtk_widget_set_size_request(engine->lookuppanel,200,50);
+		gtk_widget_set_size_request(engine->lookuppanel,100,50);
 
 		gtk_widget_add_events(GTK_WIDGET(drawing_area),GDK_POINTER_MOTION_MASK | GDK_BUTTON_RELEASE_MASK| GDK_BUTTON_PRESS_MASK);
-
 
 		g_signal_connect(G_OBJECT(engine->drawpanel),"realize",G_CALLBACK(widget_realize),engine);
 		g_signal_connect(G_OBJECT(drawing_area),"motion_notify_event",G_CALLBACK(on_mouse_move),engine);
